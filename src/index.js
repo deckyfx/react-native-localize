@@ -1,6 +1,10 @@
 // @flow
 
-import { getLocales, handlers } from "./module";
+import {
+  getLocales,
+  handlers,
+  _isUsingAutoDateAndTimeAndTimeZone,
+} from "./module";
 
 import type {
   Calendar,
@@ -92,4 +96,8 @@ export function findBestAvailableLanguage(
       return { languageTag: languageCode, isRTL };
     }
   }
+}
+
+export function isUsingAutoDateAndTimeAndTimeZone(callback) {
+  _isUsingAutoDateAndTimeAndTimeZone(callback);
 }

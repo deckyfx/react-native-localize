@@ -59,6 +59,9 @@ export function usesAutoDateAndTime(): Option<boolean> {
 export function usesAutoTimeZone(): Option<boolean> {
   return constants.usesAutoTimeZone;
 }
+export const _isUsingAutoDateAndTimeAndTimeZone = (callback) => {
+  RNLocalize.isUsingAutoDateAndTimeAndTimeZone(callback);
+};
 
 export const handlers: Set<Function> = new Set();
 

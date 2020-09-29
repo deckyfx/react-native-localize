@@ -12,6 +12,7 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.view.View;
+import 	android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.LifecycleEventListener;
@@ -19,7 +20,9 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.module.annotations.ReactModule;
+import com.facebook.react.bridge.Callback;
 import com.facebook.react.modules.core.DeviceEventManagerModule.RCTDeviceEventEmitter;
 
 import java.lang.reflect.Method;
@@ -239,17 +242,30 @@ public class RNLocalizeModule extends ReactContextBaseJavaModule implements Life
   private boolean getUsesAutoDateAndTime() {
     ContentResolver resolver = getReactApplicationContext().getContentResolver();
 
-    return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1
+    boolean result = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1
         ? Settings.Global.getInt(resolver, Settings.Global.AUTO_TIME, 0)
         : Settings.System.getInt(resolver, Settings.System.AUTO_TIME, 0)) != 0;
+
+    Log.i("AUTO", "getUsesAutoDateAndTime " + String.valueOf(result));
+
+    return result;
   }
 
   private boolean getUsesAutoTimeZone() {
     ContentResolver resolver = getReactApplicationContext().getContentResolver();
 
-    return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1
+    boolean result =  (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1
         ? Settings.Global.getInt(resolver, Settings.Global.AUTO_TIME_ZONE, 0)
         : Settings.System.getInt(resolver, Settings.System.AUTO_TIME_ZONE, 0)) != 0;
+
+    Log.i("AUTO", "getUsesAutoTimeZone " + String.valueOf(result));
+
+    return result;
+  }
+
+  @ReactMethod
+  public void isUsingAutoDateAndTimeAndTimeZone(Callback successCallback) {
+    successCallback.invoke(this.getUsesAutoDateAndTime(), this.getUsesAutoTimeZone());
   }
 
   private @Nonnull WritableMap getExportedConstants() {
